@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+   name: apps
+  namespace: openshift-gitops
+spec:
+  generators:
+  - git:
+      repoURL: https://github.com/m4reshal/example-helm-gitops-practice.git
+      revision: HEAD
+      directories:
+      - path: apps/*
+      - path: apps/helm-operators/*
+      - path: apps/helm-operators
+        exclude: true
+  syncPolicy:
+    preserveResourcesOnDeletion: true
+  template:
+    metadata:
+      name: '{{path.basename}}'
+    spec:
+      project: apps
+      source:
+        repoURL: https://github.com/m4reshal/example-helm-gitops-practice.git
+        targetRevision: HEAD
+        path: '{{path}}'
+        helm:
+          valueFiles:
+          - values-ocp.yaml
+      destination:
+        server: https://console-openshift-console.apps.ocphb.konsalt.info
+      syncPolicy
+      # Operators
+      #        automated:
+      #          prune: true
+      #        syncOptions:
+      #        - Replace=true

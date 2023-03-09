@@ -1,0 +1,11 @@
+required: true
+userWorkloads: true
+movetoInfra: true
+persistent: true
+
+
+########### Uncomment the following values when "persistent: true" ################
+prometheusStorageSize: 20Gi
+storageClassName: thin
+retention: 15d
+alertManagerStorageSize: 10Gi

@@ -1,0 +1,5 @@
+required: true
+clusterLoggingChannel: stable-5.6
+elasticSearchChannel: stable-5.6
+storageClassName: thin
+storageSize: 150Gi

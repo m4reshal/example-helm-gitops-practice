@@ -1,0 +1,116 @@
+{{- if .Values.required }}
+apiVersion: "logging.openshift.io/v1"
+kind: "ClusterLogging"
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+    argocd.argoproj.io/sync-wave: "7"
+  name: "instance"
+  namespace: "openshift-logging"
+spec:
+  managementState: "Managed"
+  logStore:
+    elasticsearch:
+      nodeCount: 3
+      redundancyPolicy: SingleRedundancy
+      resources:
+        limits:
+          memory: 16Gi
+        requests:
+          cpu: 1
+          memory: 16Gi
+      storage:
+        size: "{{ .Values.storageSize }}"
+        storageClassName: "{{ .Values.storageClassName }}"
+      tolerations:
+      - effect: NoSchedule
+        key: logging
+        operator: Equal
+        value: reserved
+      - effect: NoExecute
+        
+        operator: Equal
+        value: reserved
+      - effect: NoSchedule
+        key: infra
+        operator: Equal
+        value: reserved
+      - effect: NoExecute
+        key: infra
+        operator: Equal
+        value: reserved
+    retentionPolicy:
+      application:
+        maxAge: 14d
+      audit:
+        maxAge: 14d
+      infra:
+        maxAge: 14d
+  
+  visualization:
+    kibana:
+      replicas: 1
+      resources:
+        limits:
+          memory: 2Gi
+        requests:
+          cpu: 100m
+          memory: 1Gi
+      tolerations:
+      - effect: NoSchedule
+        key: logging
+        operator: Equal
+        value: reserved
+      - effect: NoExecute
+        key: logging
+        operator: Equal
+        value: reserved
+      - effect: NoSchedule
+        key: infra
+        operator: Equal
+        value: reserved
+      - effect: NoExecute
+        key: infra
+        operator: Equal
+        value: reserved
+    
+  curation:
+    type: "curator"
+    curator:
+      schedule: "30 3 * * *"
+  collection:
+    logs:
+      fluentd:
+        resources:
+          limits:
+            memory: 2Gi
+          requests:
+            cpu: 100m
+            memory: 1Gi
+        tolerations:
+        - effect: NoSc
+          key: logging
+          operator: Equal
+          value: reserved
+        - effect: NoExecute
+          key: logging
+          operator: Equal
+          value: reserved
+        - effect: NoSchedule
+          key: infra
+          operator: Equal
+          value: reserved
+        - effect: NoExecute
+          key: infra
+          operator: Equal
+          value: reserved
+        - effect: NoSchedule
+          key: router
+          operator: Equal
+          value: reserved
+        - effect: NoExecute
+          key: router
+          operator: Equal
+          value: reserved
+      type: fluentd
+{{- end }}

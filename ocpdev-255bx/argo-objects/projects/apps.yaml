@@ -12,3 +12,10 @@ spec:
     server: '*'
   sourceRepos:
   - '*'
+  #roles:
+  #- description: Developers get view and sync
+  #  name: developer
+  #  policies:
+  #  - p, role:developer, applications, get, test-project/*, allow
+  #  - p, role:developer, applications, sync, test-project/*, allow
+  #  - p, role:developer, projects, get, test-project, allow

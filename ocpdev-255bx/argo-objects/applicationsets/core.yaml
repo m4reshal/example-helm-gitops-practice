@@ -16,6 +16,9 @@ spec:
       - path: core/jobs/*
       - path: core/jobs
         exclude: true
+      - path: core/policies/kyverno-policies/*
+      - path: core/policies
+        exclude: true
   syncPolicy:
     preserveResourcesOnDeletion: true
   template:

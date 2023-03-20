@@ -1,0 +1,9 @@
+# Install kyverno in the "kyverno" namespace specificly
+namespace: kyverno
+
+# For high availablity make sure there is more then 1 pod of kyverno running
+replicaCount: 3
+
+# To run on openshift Kyverno need not to create SCC
+securityContext: null
+testSecurityContext: {}

@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: operators
+  name: 3rd-party-operators
   namespace: openshift-gitops
 spec:
   generators:
   - git:
-      repoURL: https://github.com/m4reshal/example-helm-gitops-practice.git
+      repoURL: https://github.com/m4reshal/GitOps-For-Multi-Openshift-Cluster-Management.git
       revision: HEAD
       directories:
-      - path: apps/*
-      - path: apps/helm-operators/*
-      - path: apps/helm-operators
+      - path: 3rd-party-operators/*
+      - path: 3rd-party-operators/helm-operators/*
+      - path: 3rd-party-operators/helm-operators
         exclude: true
   syncPolicy:
     preserveResourcesOnDeletion: true
@@ -19,16 +19,16 @@ spec:
     metadata:
       name: '{{path.basename}}'
     spec:
-      project: operators
+      project: 3rd-party-operators
       source:
-        repoURL: https://github.com/m4reshal/example-helm-gitops-practice.git
+        repoURL:  https://github.com/m4reshal/example-helm-gitops-practice.git
         targetRevision: HEAD
         path: '{{path}}'
         helm:
           valueFiles:
           - values-ocp.yaml
       destination:
-        server: https://console-openshift-console.apps.ocphb.konsalt.info
+        server: https://kubernetes.default.svc
       syncPolicy:
         automated:
           prune: true
@@ -48,3 +48,4 @@ spec:
       #          prune: true
       #        syncOptions:
       #        - Replace=true
+
